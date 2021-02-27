@@ -15,7 +15,6 @@ class MyWidget(QMainWindow):
         super().__init__()
         uic.loadUi('push_form.ui', self)  # Загружаем дизайн
         self.qp = QPainter()
-        print('here')
         self.pushButton.clicked.connect(self.initUI)
 
     def initUI(self):
@@ -46,51 +45,10 @@ class MyWidget(QMainWindow):
             self.paint_id = 0
 
     def draw(self):
-        if self.paint_id == DRAW_CIRCLE:
-            self.drawCircle()
-        elif self.paint_id == DRAW_RECTANGLE:
-            self.drawRectangle()
-        elif self.paint_id == DRAW_TRIANGLE:
-            self.drawTriangle()
-
-    def drawRectangle(self):
-        self.qp.drawRect(*self.coords, *self.getRandomSize())
+        self.drawCircle()
 
     def drawCircle(self):
         self.qp.drawEllipse(*self.coords, *self.getRandomSize())
-
-    def drawTriangle(self):
-        path = QPainterPath()
-        x, y = self.coords
-        size = self.getRandomSize()
-        offset_x, offset_y = size
-
-        coords = [(x, y), (x - offset_x, y + offset_y), (x + offset_y, y + offset_y)]
-        path.moveTo(*coords[0])
-        path.lineTo(*coords[1])
-        path.lineTo(*coords[2])
-        path.lineTo(*coords[0])
-        self.qp.fillPath(path, self.getRandomColor())
-        pass
-
-    def mousePressEvent(self, event):
-        self.coords = [event.x(), event.y()]
-        button = event.button()
-        if button == Qt.LeftButton:
-            self.paint_id = DRAW_CIRCLE
-        elif button == Qt.RightButton:
-            self.paint_id = DRAW_RECTANGLE
-        self.runDraw()
-
-    def mouseMoveEvent(self, event):
-        self.coords = [event.x(), event.y()]
-
-    def keyPressEvent(self, event):
-        key = event.key()
-        if key == Qt.Key_Space:
-            self.paint_id = DRAW_TRIANGLE
-            self.runDraw()
-
 
 
 def except_hook(cls, exception, traceback):
