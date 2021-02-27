@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QWidget, QApplication, QLabel
+from PyQt5 import uic
+from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPainter, QColor, QPainterPath
 import random
@@ -9,12 +10,13 @@ DRAW_RECTANGLE = 2
 DRAW_TRIANGLE = 3
 
 
-class Example(QWidget):
+class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.initUI()
+        uic.loadUi('push_form.ui', self)  # Загружаем дизайн
         self.qp = QPainter()
-        self.flag = False
+        print('here')
+        self.pushButton.clicked.connect(self.initUI)
 
     def initUI(self):
         self.setGeometry(300, 300, 300, 300)
@@ -97,6 +99,6 @@ def except_hook(cls, exception, traceback):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    ex = Example()
+    ex = MyWidget()
     sys.excepthook = except_hook
     sys.exit(app.exec_())
